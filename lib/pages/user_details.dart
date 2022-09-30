@@ -16,11 +16,15 @@ class UserDetailsPage extends StatelessWidget {
     var textTheme = Theme.of(context).textTheme;
     return WillPopScope(
       child: Scaffold(
-        appBar: AppBar(elevation: 0, backgroundColor: Colors.transparent),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          iconTheme: const IconThemeData(color: Colors.black),
+        ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(
-                left: 28, right: 28, top: 64, bottom: 28),
+            padding:
+                const EdgeInsets.only(left: 28, right: 28, top: 64, bottom: 28),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -98,7 +102,10 @@ class UserDetailsPage extends StatelessWidget {
                               .toList(),
                         );
                       }
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: CircularProgressIndicator(),
+                      ));
                     },
                   )
                 ]),
@@ -106,8 +113,8 @@ class UserDetailsPage extends StatelessWidget {
         ),
       ),
       onWillPop: () async {
-        UserDatabase.instance.close().then((value) => true);
-        return Future.value(false);
+        await UserDatabase.instance.close();
+        return Future.value(true);
       },
     );
   }

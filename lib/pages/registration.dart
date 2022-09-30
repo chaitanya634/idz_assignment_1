@@ -13,9 +13,12 @@ class RegistrationPage extends StatelessWidget {
   final birthDateMonthTextFieldController = TextEditingController();
   final birthDateDayTextFieldController = TextEditingController();
   final birthDateYearTextFieldController = TextEditingController();
+  final nameTextFieldController = TextEditingController();
+  final emailTextFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+
     var textTheme = Theme.of(context).textTheme;
 
     DateTime? birthDate;
@@ -40,6 +43,7 @@ class RegistrationPage extends StatelessWidget {
               Text('Name', style: textTheme.titleLarge),
               const SizedBox(height: 4),
               TextField(
+                controller: nameTextFieldController,
                 style: GoogleFonts.quicksand(fontWeight: FontWeight.w600),
                 decoration: const InputDecoration(hintText: 'Enter Your Name'),
                 onChanged: (value) => name = value,
@@ -124,7 +128,7 @@ class RegistrationPage extends StatelessWidget {
               Text('Email Id', style: textTheme.titleLarge),
               const SizedBox(height: 4),
               TextField(
-                // controller: emailIdTextFieldController,
+                controller: emailTextFieldController,
                 onChanged: (value) => emailId = value,
                 style: GoogleFonts.quicksand(fontWeight: FontWeight.w600),
                 decoration:
@@ -158,7 +162,14 @@ class RegistrationPage extends StatelessWidget {
                     );
                     UserDatabase.instance
                         .create(user)
-                        .then((value) => Navigator.pushNamed(context, UserDetailsPage.routeName));
+                        .then((value) {
+                          nameTextFieldController.clear();
+                          birthDateDayTextFieldController.clear();
+                          birthDateMonthTextFieldController.clear();
+                          birthDateYearTextFieldController.clear();
+                          emailTextFieldController.clear();
+                          Navigator.pushNamed(context, UserDetailsPage.routeName);
+                        });
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('Please fill all fields')));
