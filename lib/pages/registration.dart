@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:idz_assignment_1/database/user_database.dart';
 import 'package:idz_assignment_1/enums.dart';
 import 'package:idz_assignment_1/models/user_model.dart';
+import 'package:idz_assignment_1/pages/user_details.dart';
 
 class RegistrationPage extends StatelessWidget {
   RegistrationPage({super.key});
@@ -157,7 +158,7 @@ class RegistrationPage extends StatelessWidget {
                     );
                     UserDatabase.instance
                         .create(user)
-                        .then((value) => debugPrint('done'));
+                        .then((value) => Navigator.pushNamed(context, UserDetailsPage.routeName));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('Please fill all fields')));
