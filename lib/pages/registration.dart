@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:idz_assignment_1/database/user_database.dart';
 import 'package:idz_assignment_1/enums.dart';
+import 'package:idz_assignment_1/models/user_model.dart';
 
 class RegistrationPage extends StatelessWidget {
   RegistrationPage({super.key});
 
   static const routeName = 'registration_page';
 
-  final nameTextFieldController = TextEditingController();
   final birthDateMonthTextFieldController = TextEditingController();
   final birthDateDayTextFieldController = TextEditingController();
   final birthDateYearTextFieldController = TextEditingController();
-  final emailIdTextFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
+
+    DateTime? birthDate;
+    String? emailId;
+    String? name;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -36,7 +41,7 @@ class RegistrationPage extends StatelessWidget {
               TextField(
                 style: GoogleFonts.quicksand(fontWeight: FontWeight.w600),
                 decoration: const InputDecoration(hintText: 'Enter Your Name'),
-                onChanged: (value) => nameTextFieldController.text = value,
+                onChanged: (value) => name = value,
               ),
               const SizedBox(height: 28),
               //birth date
@@ -46,18 +51,18 @@ class RegistrationPage extends StatelessWidget {
                 builder: (context, setState) {
                   return InkWell(
                     onTap: () async {
-                      var birthDate = await showDatePicker(
+                      birthDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime(1960),
                           firstDate: DateTime(1700),
                           lastDate: DateTime.now());
                       if (birthDate != null) {
                         birthDateDayTextFieldController.text =
-                            birthDate.day.toString();
+                            birthDate!.day.toString();
                         birthDateMonthTextFieldController.text =
-                            Months.values[birthDate.month - 1].name;
+                            Months.values[birthDate!.month - 1].name;
                         birthDateYearTextFieldController.text =
-                            birthDate.year.toString();
+                            birthDate!.year.toString();
                       }
                     },
                     child: Row(children: [
@@ -118,8 +123,8 @@ class RegistrationPage extends StatelessWidget {
               Text('Email Id', style: textTheme.titleLarge),
               const SizedBox(height: 4),
               TextField(
-                controller: emailIdTextFieldController,
-                onChanged: (value) => emailIdTextFieldController.text = value,
+                // controller: emailIdTextFieldController,
+                onChanged: (value) => emailId = value,
                 style: GoogleFonts.quicksand(fontWeight: FontWeight.w600),
                 decoration:
                     const InputDecoration(hintText: 'Enter Your Email Id'),
@@ -134,11 +139,29 @@ class RegistrationPage extends StatelessWidget {
                     minimumSize: const Size(double.maxFinite, 42),
                     backgroundColor: Colors.orange),
                 onPressed: () {
-                  debugPrint('Name: ${nameTextFieldController.text}');
-                  debugPrint('Birth Month: ${birthDateMonthTextFieldController.text}');
-                  debugPrint('Birth Day: ${birthDateDayTextFieldController.text}');
-                  debugPrint('Birth Year: ${birthDateYearTextFieldController.text}');
-                  debugPrint('Email: ${emailIdTextFieldController.text}');
+                  // debugPrint('Name: $name');
+                  // debugPrint(
+                  //     'Birth Month: ${birthDateMonthTextFieldController.text}');
+                  // debugPrint(
+                  //     'Birth Day: ${birthDateDayTextFieldController.text}');
+                  // debugPrint(
+                  //     'Birth Year: ${birthDateYearTextFieldController.text}');
+                  // debugPrint('Email: $emailId');
+                  // debugPrint('date: $birthDate');
+
+                  if (name != null && birthDate != null && emailId != null) {
+                    var user = UserModel(
+                      name: name!,
+                      birthDate: birthDate!,
+                      emailId: emailId!,
+                    );
+                    UserDatabase.instance
+                        .create(user)
+                        .then((value) => debugPrint('done'));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Please fill all fields')));
+                  }
                 },
                 child: Text(
                   'Submit',
