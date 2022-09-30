@@ -11,6 +11,7 @@ class RegistrationPage extends StatelessWidget {
   final birthDateMonthTextFieldController = TextEditingController();
   final birthDateDayTextFieldController = TextEditingController();
   final birthDateYearTextFieldController = TextEditingController();
+  final emailIdTextFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class RegistrationPage extends StatelessWidget {
               TextField(
                 style: GoogleFonts.quicksand(fontWeight: FontWeight.w600),
                 decoration: const InputDecoration(hintText: 'Enter Your Name'),
+                onChanged: (value) => nameTextFieldController.text = value,
               ),
               const SizedBox(height: 28),
               //birth date
@@ -116,6 +118,8 @@ class RegistrationPage extends StatelessWidget {
               Text('Email Id', style: textTheme.titleLarge),
               const SizedBox(height: 4),
               TextField(
+                controller: emailIdTextFieldController,
+                onChanged: (value) => emailIdTextFieldController.text = value,
                 style: GoogleFonts.quicksand(fontWeight: FontWeight.w600),
                 decoration:
                     const InputDecoration(hintText: 'Enter Your Email Id'),
@@ -123,15 +127,27 @@ class RegistrationPage extends StatelessWidget {
               const SizedBox(height: 28),
               //submit button
               ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      minimumSize: const Size(double.maxFinite, 42),
-                      backgroundColor: Colors.orange),
-                  onPressed: () {},
-                  child: Text('Submit',
-                      style:
-                          GoogleFonts.quicksand(fontWeight: FontWeight.bold, fontSize: 18)))
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    minimumSize: const Size(double.maxFinite, 42),
+                    backgroundColor: Colors.orange),
+                onPressed: () {
+                  debugPrint('Name: ${nameTextFieldController.text}');
+                  debugPrint('Birth Month: ${birthDateMonthTextFieldController.text}');
+                  debugPrint('Birth Day: ${birthDateDayTextFieldController.text}');
+                  debugPrint('Birth Year: ${birthDateYearTextFieldController.text}');
+                  debugPrint('Email: ${emailIdTextFieldController.text}');
+                },
+                child: Text(
+                  'Submit',
+                  style: GoogleFonts.quicksand(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              )
             ],
           ),
         ),
