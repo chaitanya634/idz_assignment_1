@@ -6,7 +6,7 @@ ThemeData lightTheme() {
   return ThemeData(
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark
       ),
     ),
     textTheme: TextTheme(
